@@ -3,7 +3,7 @@ from datetime import datetime
 
 from telethon.errors import BadRequestError, FloodWaitError, ForbiddenError
 
-from userbot import catub
+from userbot import jmthon
 
 from ..Config import Config
 from ..core.logger import logging
@@ -28,50 +28,39 @@ botusername = Config.TG_BOT_USERNAME
 cmhd = Config.COMMAND_HAND_LER
 
 
-@catub.bot_cmd(pattern="^/help$", from_users=Config.OWNER_ID)
+@jmthon.bot_cmd(
+    pattern=f"^اوامري$",
+    from_users=Config.OWNER_ID,
+)
 async def bot_help(event):
     await event.reply(
-        f"""The commands in the bot are:
-**Note : **__This commands work only in this bot__ {botusername}
-
-• **Cmd : **/uinfo <reply to user message>
-• **Info : **__You have noticed that forwarded stickers/emoji doesn't have forward tag so you can identify the user who sent thoose messages by this cmd.__
-• **Note : **__It works for all forwarded messages. even for users who's permission forward message nobody.__
-
-• **Cmd : **/ban <reason> or /ban <username/userid> <reason>
-• **Info : **__Reply to a user message with reason so he will be notified as you banned from the bot and his messages will not be forworded to you further.__
-• **Note : **__Reason is must. without reason it won't work. __
-
-• **Cmd : **/unban <reason(optional)> or /unban <username/userid>
-• **Info : **__Reply to user message or provide username/userid to unban from the bot.__
-• **Note : **__To check banned users list use__ `{cmhd}bblist`.
-
-• **Cmd : **/broadcast
-• **Info : **__Reply to a message to get broadcasted to every user who started your bot. To get list of users use__ `{cmhd}bot_users`.
-• **Note : **__if user stoped/blocked the bot then he will be removed from your database that is he will erased from the bot_starters list.__
-"""
+        f"**▾∮ قائـمه اوامر المطور **\n* تستخدم في ↫ `{Config.TG_BOT_USERNAME}` فقط! `\n**⍣ⵧⵧⵧⵧⵧᴊᴍᴛʜᴏɴⵧⵧⵧⵧⵧ⍣**\n\n*الامر  ( اذاعة  ) \n- لعمل اذاعة لمستخدمي البوت ◛ ↶\n**⋆ قم بالرد ع الرسالة لاذاعتها للمستخدمين ↸**\n\n*الامر ( معلومات ) \n- لمعرفة الملصقات المرسلة ↶\n**⋆ بالرد ع المستخدم لجلب معلوماتة **\n\n*الامر ( حظر + سبب )\n- لحظر مستخدم من البوت \n**⋆ بالرد ع المستخدم مع سبب مثل **\n**حظر @RR9R7 قمت بازعاجي**\n\n* الامر ( الغاء حظر ) \n لالغاء حظر المستخدم من البوت √\n**⋆ الامر والمعرف والسبب (اختياري) مثل **\n**الغاء حظر @RR9R7 + السبب اختياري**\n\n**⋆ الامر ( المحظورين )\n- لمعرفة المحظورين من البوت  **\n\n**⋆ امر ( المستخدمين ) \n- لمعرفة مستخدمين بوتك  **\n\n**⋆ الاوامر ( التكرار + تفعيل / تعطيل ) \n- تشغيل وايقاف التكرار (في البوت) ↶**\n* عند التشغيل يحظر المزعجين تلقائيًا ⊝",
+        link_preview=False,
     )
 
 
-@catub.bot_cmd(pattern="^/broadcast$", from_users=Config.OWNER_ID)
+@jmthon.bot_cmd(
+    pattern=f"^اذاعة$",
+    from_users=Config.OWNER_ID,
+)
 async def bot_broadcast(event):
     replied = await event.get_reply_message()
     if not replied:
-        return await event.reply("Reply to a message for Broadcasting First !")
+        return await event.reply("**▾∮ قم بالرد ع الرسالة لاذاعتها اولًا! 📫**")
     start_ = datetime.now()
-    br_cast = await replied.reply("Broadcasting ...")
+    br_cast = await replied.reply("**▾∮ جاري تحضير الرسالة لايذاعها! 📬**")
     blocked_users = []
     count = 0
     bot_users_count = len(get_all_starters())
     if bot_users_count == 0:
-        return await event.reply("`No one started your bot yet.`")
+        return await event.reply("**▾∮ ليس لديك مستخدمين في بوتك!⚠️ **")
     users = get_all_starters()
     if users is None:
-        return await event.reply("`Errors ocured while fetching users list.`")
+        return await event.reply("**▾∮ لم يستطيع جلب قائمة للمستخدمين ✘ **")
     for user in users:
         try:
             await event.client.send_message(
-                int(user.user_id), "🔊 You received a **new** Broadcast."
+                int(user.user_id), "**▾∮ عزيزي تسلمت رسالة جديدة 📢 **"
             )
             await event.client.send_message(int(user.user_id), replied)
             await asyncio.sleep(0.8)
@@ -83,153 +72,156 @@ async def bot_broadcast(event):
             LOGS.error(str(e))
             if BOTLOG:
                 await event.client.send_message(
-                    BOTLOG_CHATID, f"**Error while broadcasting**\n`{e}`"
+                    BOTLOG_CHATID, f"**▾∮ حصل خطأ عند اذاعة رسالتك ✘ **\n`{str(e)}`"
                 )
-
         else:
             count += 1
             if count % 5 == 0:
                 try:
                     prog_ = (
-                        "🔊 Broadcasting ...\n\n"
+                        "**▾∮ جاري تحضير الرسالة لايذاعها! 📬**\n\n"
                         + progress_str(
                             total=bot_users_count,
                             current=count + len(blocked_users),
                         )
-                        + f"\n\n• ✔️ **Success** :  `{count}`\n"
-                        + f"• ✖️ **Failed** :  `{len(blocked_users)}`"
+                        + f"\n\n**▾∮ بنـجاح ✔️:**  `{count}`\n"
+                        + f"**▾∮ خطأ ✖️ : **  `{len(blocked_users)}`"
                     )
                     await br_cast.edit(prog_)
                 except FloodWaitError as e:
                     await asyncio.sleep(e.seconds)
     end_ = datetime.now()
-    b_info = f"🔊  Successfully broadcasted message to ➜  <b>{count} users.</b>"
+    b_info = f"<b>▾∮ تم ارسال رسالتك الى «</b><i>{count}</i><b>» مستخدم 📣</b>"
     if len(blocked_users) != 0:
-        b_info += f"\n🚫  <b>{len(blocked_users)} users</b> blocked your bot recently, so have been removed."
-    b_info += (
-        f"\n⏳  <code>Process took: {time_formatter((end_ - start_).seconds)}</code>."
-    )
+        b_info += f"\n<b>▾∮ مجموع المستخدمين ↫ «</b><code>{len(blocked_users)}</code><b>» قاموا بحظر البوت ✕ </b>"
+    b_info += f"\n<i>▾∮ استغرقت عملية الاذاعة ↫ </i> <code>{time_formatter((end_ - start_).seconds)}</code>"
     await br_cast.edit(b_info, parse_mode="html")
 
 
-@catub.cat_cmd(
-    pattern="bot_users$",
-    command=("bot_users", plugin_category),
+@jmthon.ar_cmd(
+    pattern=f"^المستخدمين$",
+    command=("المستخدمين", plugin_category),
     info={
-        "header": "To get users list who started bot.",
-        "description": "To get compelete list of users who started your bot",
-        "usage": "{tr}bot_users",
+        "header": "لمعـرفة الأشخـاص الذيـن قـاموا بتشغـيل بـوتك ",
+        "description": "للحصـول عـلى قـائمة للأشخـاص الذيـن استخـدموا بـوتك",
+        "usage": "المستخدمين",
     },
 )
 async def ban_starters(event):
-    "To get list of users who started bot."
+    "لمعـرفة الأشخـاص الذيـن قـاموا بتشغـيل بـوتك"
     ulist = get_all_starters()
     if len(ulist) == 0:
-        return await edit_delete(event, "`No one started your bot yet.`")
-    msg = "**The list of users who started your bot are :\n\n**"
+        return await edit_delete(event, "**▾∮ ليس لديك مستخدمين في بوتك!⚠️ **")
+    msg = "**▾∮ اليكَ قائمة مستخدمين بوتك 🔖 ↶**\n\n**"
     for user in ulist:
-        msg += f"• 👤 {_format.mentionuser(user.first_name , user.user_id)}\n**ID:** `{user.user_id}`\n**UserName:** @{user.username}\n**Date: **__{user.date}__\n\n"
+        msg += f"**▾∮ الاسم ⪼ ** `{user.first_name}`\n**▾∮ الايدي ⪼** `{user.user_id}`\n**▾∮ المعرف ⪼** @{user.username}\n**▾∮ تاريخ الاستخدام ⪼** __{user.date}__ \n**▾∮ الرابط ⪼** 「{_format.mentionuser(user.first_name , user.user_id)}」\n\n**⍣ⵧⵧⵧⵧⵧᴊᴍᴛʜᴏɴⵧⵧⵧⵧⵧ⍣**\n[𝙅𝙈𝙏𝙃𝙊𝙉 𝙐𝙎𝙀𝙍𝘽𝙊𝙏 🧸♥](https://t.me/JMTHON)\n\n"
     await edit_or_reply(event, msg)
 
 
-@catub.bot_cmd(pattern="^/ban\\s+([\\s\\S]*)", from_users=Config.OWNER_ID)
+@jmthon.bot_cmd(
+    pattern=f"^حظر\s+([\s\S]*)",
+    from_users=Config.OWNER_ID,
+)
 async def ban_botpms(event):
     user_id, reason = await get_user_and_reason(event)
     reply_to = await reply_id(event)
     if not user_id:
         return await event.client.send_message(
-            event.chat_id, "`I can't find user to ban`", reply_to=reply_to
+            event.chat_id, "**▾∮ لم استطع ايجاد المستخدم لحظره ✘**", reply_to=reply_to
         )
     if not reason:
         return await event.client.send_message(
-            event.chat_id, "`To ban the user provide reason first`", reply_to=reply_to
+            event.chat_id,
+            "**▾∮ اكتب سبب حظره بعد الامر مثل↶**\n`/ban @RR9R7 مزعج،ممل ..الخ`",
+            reply_to=reply_to,
         )
     try:
         user = await event.client.get_entity(user_id)
         user_id = user.id
     except Exception as e:
-        return await event.reply(f"**Error:**\n`{e}`")
+        return await event.reply(f"**▾∮ هنالك خطأ ... تحقق ↻**\n`{str(e)}`")
     if user_id == Config.OWNER_ID:
-        return await event.reply("I can't ban you master")
+        return await event.reply("**▾∮ كيف لي ان احظر المالك!♕**")
     check = check_is_black_list(user.id)
     if check:
         return await event.client.send_message(
             event.chat_id,
-            f"#Already_banned\
-            \nUser already exists in my Banned Users list.\
-            \n**Reason For Bot BAN:** `{check.reason}`\
-            \n**Date:** `{check.date}`.",
+            f"**▾∮ المستخدم من ضمن المحظورين!**\n**▾∮ سبب حظرة من البوت ↫** `{check.reason}`\n**▾∮ تاريخ الحظر ↫** `{check.date}`\n",
         )
     msg = await ban_user_from_bot(user, reason, reply_to)
     await event.reply(msg)
 
 
-@catub.bot_cmd(pattern="^/unban(?:\\s|$)([\\s\\S]*)", from_users=Config.OWNER_ID)
+@jmthon.bot_cmd(
+    pattern=f"^الغاء حظر(?:\s|$)([\s\S]*)",
+    from_users=Config.OWNER_ID,
+)
 async def ban_botpms(event):
     user_id, reason = await get_user_and_reason(event)
     reply_to = await reply_id(event)
     if not user_id:
         return await event.client.send_message(
-            event.chat_id, "`I can't find user to unban`", reply_to=reply_to
+            event.chat_id,
+            "**▾∮ لا استطيع ايجاد المستخدم لالغاء حظره!**",
+            reply_to=reply_to,
         )
     try:
         user = await event.client.get_entity(user_id)
         user_id = user.id
     except Exception as e:
-        return await event.reply(f"**Error:**\n`{e}`")
+        return await event.reply(f"**▾∮ هنالك خطأ ... تحقق ↶**\n`{e}`")
     check = check_is_black_list(user.id)
     if not check:
         return await event.client.send_message(
             event.chat_id,
-            f"#User_Not_Banned\
-            \n👤 {_format.mentionuser(user.first_name , user.id)} doesn't exist in my Banned Users list.",
+            f"**▾∮ تم الغاء الحظر مسبقًا للمستخدم ❕ ↶**\n\n** ▾∮ المستخدم ⪼** 「{_format.mentionuser(user.first_name , user.id)}」\n",
         )
     msg = await unban_user_from_bot(user, reason, reply_to)
     await event.reply(msg)
 
 
-@catub.cat_cmd(
-    pattern="bblist$",
-    command=("bblist", plugin_category),
+@jmthon.ar_cmd(
+    pattern=f"^المحظورين$",
+    command=("المحظورين", plugin_category),
     info={
-        "header": "To get users list who are banned in bot.",
-        "description": "To get list of users who are banned in bot.",
-        "usage": "{tr}bblist",
+        "header": "لمعـرفة الأشخـاص المحـظورين مـن بـوتك.",
+        "description": "للحـصـول عـلى قـائمة الأشخاص المحـظورين فـي بـوتك ",
+        "usage": "المحظورين",
     },
 )
 async def ban_starters(event):
-    "To get list of users who are banned in bot."
+    "**للحصول على قائمة بالمستخدمين المحظورين من البوت**"
     ulist = get_all_bl_users()
     if len(ulist) == 0:
-        return await edit_delete(event, "`No one is banned in your bot yet.`")
-    msg = "**The list of users who are banned in your bot are :\n\n**"
+        return await edit_delete(event, "**▾∮ لا يوجد مستخدمين محظورين من البوت ✓**")
+    msg = "**▾∮ اليكَ قائمة المحظورين من بوتك 📮↶**\n\n**"
     for user in ulist:
-        msg += f"• 👤 {_format.mentionuser(user.first_name , user.chat_id)}\n**ID:** `{user.chat_id}`\n**UserName:** @{user.username}\n**Date: **__{user.date}__\n**Reason:** __{user.reason}__\n\n"
+        msg += f"**▾∮ الاسم ⪼ **`{user.first_name}`\n**▾∮ الايدي ⪼ **`{user.chat_id}`\n**▾∮ المعرف ⪼** @{user.username}\n**▾∮ الرابط ⪼ ** ┕{_format.mentionuser(user.first_name , user.chat_id)}┙\n**▾∮ تاريخ الحظر ⪼** `{user.date}`\n**▾∮ سبب الحظر ⪼** __{user.reason}__\n\n**⍣ⵧⵧⵧⵧⵧᴊᴍᴛʜᴏɴⵧⵧⵧⵧⵧ⍣**\n[𝙅𝙈𝙏𝙃𝙊𝙉 𝙐𝙎𝙀𝙍𝘽𝙊𝙏 🧸♥](https://t.me/JMTHON)\n\n"
     await edit_or_reply(event, msg)
 
 
-@catub.cat_cmd(
-    pattern="bot_antif (on|off)$",
-    command=("bot_antif", plugin_category),
+@jmthon.ar_cmd(
+    pattern=f"^التكرار (تفعيل|تعطيل)$",
+    command=("التكرار", plugin_category),
     info={
-        "header": "To enable or disable bot antiflood.",
-        "description": "if it was turned on then after 10 messages or 10 edits of same messages in less time then your bot auto loacks them.",
+        "header": "تشغيل وايقاف التكرار في البوت الخاص بك",
+        "description": " عند التشغيل يحظر المزعجين تلقائيًا الذين يكررون 10 رسائل او يعدلون 10 تعديلات في وقت واحد.",
         "usage": [
-            "{tr}bot_antif on",
-            "{tr}bot_antif off",
+            "التكرار تفعيل",
+            "التكرار تعطيل",
         ],
     },
 )
 async def ban_antiflood(event):
     "To enable or disable bot antiflood."
     input_str = event.pattern_match.group(1)
-    if input_str == "on":
+    if input_str == "تفعيل":
         if gvarstatus("bot_antif") is not None:
-            return await edit_delete(event, "`Bot Antiflood was already enabled.`")
+            return await edit_delete(event, "**▾∮ بالفعل تم تفعيل تحذير التكرار  ✅**")
         addgvar("bot_antif", True)
-        await edit_delete(event, "`Bot Antiflood Enabled.`")
-    elif input_str == "off":
+        await edit_delete(event, "`**▾∮ تم تفعيل تحذير التكرار  ☑️**")
+    elif input_str == "تعطيل":
         if gvarstatus("bot_antif") is None:
-            return await edit_delete(event, "`Bot Antiflood was already disabled.`")
+            return await edit_delete(event, "**▾∮ بالفعل تم تعطيل تحذير التكرار ❌**")
         delgvar("bot_antif")
-        await edit_delete(event, "`Bot Antiflood Disabled.`")
+        await edit_delete(event, "**▾∮ تم تعطيل تحذير التكرار ✘**")

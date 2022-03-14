@@ -18,7 +18,7 @@ from telethon.events import CallbackQuery
 from telethon.utils import get_attributes
 from wget import download
 
-from userbot import catub
+from userbot import jmthon
 
 from ..Config import Config
 from ..core import check_owner, pool
@@ -44,17 +44,17 @@ PATH = "./userbot/cache/ytsearch.json"
 plugin_category = "bot"
 
 
-@catub.cat_cmd(
-    pattern="iytdl(?:\s|$)([\s\S]*)",
-    command=("iytdl", plugin_category),
+@jmthon.ar_cmd(
+    pattern="يوت(?:\s|$)([\s\S]*)",
+    command=("يوت", plugin_category),
     info={
-        "header": "ytdl with inline buttons.",
-        "description": "To search and download youtube videos by inline buttons.",
-        "usage": "{tr}iytdl [URL / Text] or [Reply to URL / Text]",
+        "header": "للبحث و التحميل في اليوتيوب",
+        "description": "للبحث و تحميل الفيديوهات من اليوتيوب بصيغه انلاين.",
+        "usage": "{tr}يوت [رابط / نص] او [بالرد على رابط / نص]",
     },
 )
 async def iytdl_inline(event):
-    "ytdl with inline buttons."
+    "للبحث و التحميل في اليوتيوب"
     reply = await event.get_reply_message()
     reply_to_id = await reply_id(event)
     input_str = event.pattern_match.group(1)
@@ -64,8 +64,12 @@ async def iytdl_inline(event):
     elif reply and reply.text:
         input_url = (reply.text).strip()
     if not input_url:
-        return await edit_delete(event, "Give input or reply to a valid youtube URL")
-    catevent = await edit_or_reply(event, f"🔎 Searching Youtube for: `'{input_url}'`")
+        return await edit_delete(
+            event, "**▾∮ اكتب الرابط او قم بالرد ع رابط يوتيوب ✓**"
+        )
+    jmthonevent = await edit_or_reply(
+        event, f"**▾∮ جاري البحث في اليوتيوب : ☟** \n`'{input_url}'`"
+    )
     flag = True
     cout = 0
     results = None
@@ -81,13 +85,13 @@ async def iytdl_inline(event):
         if cout > 5:
             flag = False
     if results:
-        await catevent.delete()
+        await jmthonevent.delete()
         await results[0].click(event.chat_id, reply_to=reply_to_id, hide_via=True)
     else:
-        await catevent.edit("`Sorry!. Can't find any results`")
+        await jmthonevent.edit("**▾∮ عذرًا لم أستطيع ايجاد اي نتائج! ✘**")
 
 
-@catub.tgbot.on(
+@jmthon.tgbot.on(
     CallbackQuery(
         data=re.compile(b"^ytdl_download_(.*)_([\d]+|mkv|mp4|mp3)(?:_(a|v))?")
     )
@@ -112,19 +116,21 @@ async def ytdl_download_callback(c_q: CallbackQuery):  # sourcery no-metrics
     if str(choice_id).isdigit():
         choice_id = int(choice_id)
         if choice_id == 0:
-            await c_q.answer("🔄  Processing...", alert=False)
+            await c_q.answer("الان عملية معالجة التحميل ... 📽", alert=False)
             await c_q.edit(buttons=(await download_button(yt_code)))
             return
     startTime = time()
     choice_str, disp_str = get_choice_by_id(choice_id, downtype)
-    media_type = "Video" if downtype == "v" else "Audio"
-    callback_continue = f"Downloading {media_type} Please Wait..."
-    callback_continue += f"\n\nFormat Code : {disp_str}"
+    media_type = "الفديو" if downtype == "v" else "الصوت"
+    callback_continue = f"جارٍ تنزيل {media_type} الرجاء الانتظار ..."
+    callback_continue += f"\n\nكود التنسيق : {disp_str}"
     await c_q.answer(callback_continue, alert=True)
-    upload_msg = await c_q.client.send_message(BOTLOG_CHATID, "Uploading...")
+    upload_msg = await c_q.client.send_message(
+        BOTLOG_CHATID, "**▾∮ جارٍ التحميل الرجاء الانتظار ...**"
+    )
     yt_url = BASE_YT_URL + yt_code
     await c_q.edit(
-        f"<b>⬇️ Downloading {media_type} ....</b>\n\n🔗  <a href={yt_url}> <b>Link</b></a>\n🆔  <b>Format Code</b> : {disp_str}",
+        f"<b>▾∮ جارٍ تنزيل 🎧 {media_type} ...</b>\n\n  <a href={yt_url}> <b>الرابط 🔗</b></a>\n🆔  <b>كود التنسيق</b> : {disp_str}",
         parse_mode="html",
     )
     if downtype == "v":
@@ -141,9 +147,9 @@ async def ytdl_download_callback(c_q: CallbackQuery):  # sourcery no-metrics
         else:
             _fpath = _path
     if not _fpath:
-        await edit_delete(upload_msg, "nothing found !")
+        await edit_delete(upload_msg, "**▾∮ لم يتم العثور على شيء!**")
         return
-    if not thumb_pic:
+    if not thumb_pic and downtype == "v":
         thumb_pic = str(await pool.run_in_thread(download)(await get_ytthumb(yt_code)))
     attributes, mime_type = get_attributes(str(_fpath))
     ul = io.open(Path(_fpath), "rb")
@@ -171,7 +177,7 @@ async def ytdl_download_callback(c_q: CallbackQuery):  # sourcery no-metrics
     uploaded_media = await c_q.client.send_file(
         BOTLOG_CHATID,
         file=media,
-        caption=f"<b>File Name : </b><code>{os.path.basename(Path(_fpath))}</code>",
+        caption=f"<b>▾∮ اسم الملف : \n</b><code>{os.path.basename(Path(_fpath))}</code>",
         parse_mode="html",
     )
     await upload_msg.delete()
@@ -182,7 +188,7 @@ async def ytdl_download_callback(c_q: CallbackQuery):  # sourcery no-metrics
     )
 
 
-@catub.tgbot.on(
+@jmthon.tgbot.on(
     CallbackQuery(data=re.compile(b"^ytdl_(listall|back|next|detail)_([a-z0-9]+)_(.*)"))
 )
 @check_owner
@@ -204,7 +210,7 @@ async def ytdl_callback(c_q: CallbackQuery):
     )
     if not os.path.exists(PATH):
         return await c_q.answer(
-            "Search data doesn't exists anymore, please perform search again ...",
+            "**▾∮ لم تعد بيانات البحث موجودة \nيرجى إجراء البحث مرة أخرى ...**",
             alert=True,
         )
     with open(PATH) as f:
@@ -235,7 +241,7 @@ async def ytdl_callback(c_q: CallbackQuery):
     elif choosen_btn == "next":
         index = int(page) + 1
         if index > total:
-            return await c_q.answer("That's All Folks !", alert=True)
+            return await c_q.answer("هذا كل ما لدي أيها الناس 😡!", alert=True)
         await c_q.answer()
         front_vid = search_data.get(str(index))
         await c_q.edit(
@@ -250,13 +256,13 @@ async def ytdl_callback(c_q: CallbackQuery):
             parse_mode="html",
         )
     elif choosen_btn == "listall":
-        await c_q.answer("View Changed to:  📜  List", alert=False)
+        await c_q.answer("تم تغيير العرض الى:  📜  القائمة", alert=False)
         list_res = "".join(
             search_data.get(vid_s).get("list_view") for vid_s in search_data
         )
 
         telegraph = await post_to_telegraph(
-            f"Showing {total} youtube video results for the given query ...",
+            f"يتم عرض {total} من نتائج فيديو youtube لطلب البحث المحدد ...",
             list_res,
         )
         await c_q.edit(
@@ -264,13 +270,13 @@ async def ytdl_callback(c_q: CallbackQuery):
             buttons=[
                 (
                     Button.url(
-                        "↗️  Click To Open",
+                        "اضغط لفتح القائمة ↗️",
                         url=telegraph,
                     )
                 ),
                 (
                     Button.inline(
-                        "📰  Detailed View",
+                        " العرض التفصيلي 📰",
                         data=f"ytdl_detail_{data_key}_{page}",
                     )
                 ),
@@ -278,7 +284,7 @@ async def ytdl_callback(c_q: CallbackQuery):
         )
     else:  # Detailed
         index = 1
-        await c_q.answer("View Changed to:  📰  Detailed", alert=False)
+        await c_q.answer("تم تغيير العرض إلى :  📰  مفصلة", alert=False)
         first = search_data.get(str(index))
         await c_q.edit(
             text=first.get("message"),
