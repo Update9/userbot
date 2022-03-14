@@ -36,12 +36,12 @@ def check_data_base_heal_th():
         output = f"❌ {e}"
         is_database_working = False
     else:
-        output = "Functioning"
+        output = "تعمل بنجاح ✓"
         is_database_working = True
     return is_database_working, output
 
 
-async def catalive(StartTime):
+async def jmthonalive(StartTime):
     _, check_sgnirts = check_data_base_heal_th()
     sudo = "Enabled" if Config.SUDO_USERS else "Disabled"
     uptime = await get_readable_time((time.time() - StartTime))
@@ -83,9 +83,9 @@ async def catalive(StartTime):
         dyno = f"{AppHours}h {AppMinutes}m/{hours}h {minutes}m"
     except Exception as e:
         dyno = e
-    return f"Catuserbot Stats\
-                 \n\nDatabase : {check_sgnirts}\
-                  \nSudo : {sudo}\
-                  \nUptime : {uptime}\
-                  \nDyno : {dyno}\
+    return f"حالة سورس جمثون\
+                 \n\nقاعدة البيانات : {check_sgnirts}\
+                  \nالسودة : {sudo}\
+                  \nالوقت : {uptime}\
+                  \nالدينو : {dyno}\
                   "

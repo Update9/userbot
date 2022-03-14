@@ -31,11 +31,11 @@ name_dl = (
 )
 
 
-async def yt_search(cat):
+async def yt_search(jmthon):
     try:
-        cat = urllib.parse.quote(cat)
+        jmthon = urllib.parse.quote(jmthon)
         html = urllib.request.urlopen(
-            "https://www.youtube.com/results?search_query=" + cat
+            "https://www.youtube.com/results?search_query=" + jmthon
         )
         user_data = re.findall(r"watch\?v=(\S{11})", html.read().decode())
         video_link = []
@@ -87,8 +87,8 @@ class YT_Search_X:
 ytsearch_data = YT_Search_X()
 
 
-async def yt_data(cat):
-    params = {"format": "json", "url": cat}
+async def yt_data(jmthon):
+    params = {"format": "json", "url": jmthon}
     url = "https://www.youtube.com/oembed"  # https://stackoverflow.com/questions/29069444/returning-the-urls-as-a-list-from-a-youtube-search-query
     query_string = urllib.parse.urlencode(params)
     url = url + "?" + query_string

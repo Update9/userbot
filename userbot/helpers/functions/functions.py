@@ -78,22 +78,21 @@ async def age_verification(event, reply_to_id):
 
 
 async def animator(media, mainevent, textevent):
-    # //Hope u dunt kang :/ @Jisan7509
+    # //Hope u dunt kang :/ @Jisan7509  .  translate by arabic  @RR97
     h = media.file.height
     w = media.file.width
     w, h = (-1, 512) if h > w else (512, -1)
     if not os.path.isdir(Config.TEMP_DIR):
         os.makedirs(Config.TEMP_DIR)
-    BadCat = await mainevent.client.download_media(media, Config.TEMP_DIR)
-    await textevent.edit("__🎞Converting into Animated sticker..__")
+    Badjmthon = await mainevent.client.download_media(media, Config.TEMP_DIR)
+    await textevent.edit("- يتم التحويل الى ملصق متحرك انتظر ♡")
     await runcmd(
-        f"ffmpeg -ss 00:00:00 -to 00:00:02.900 -i {BadCat} -vf scale={w}:{h} -c:v libvpx-vp9 -crf 30 -b:v 560k -maxrate 560k -bufsize 256k -an animate.webm"
+        f"ffmpeg -ss 00:00:00 -to 00:00:02.900 -i {Badjmthon} -vf scale={w}:{h} -c:v libvpx-vp9 -crf 30 -b:v 560k -maxrate 560k -bufsize 256k -an animate.webm"
     )  # pain
-    os.remove(BadCat)
+    os.remove(Badjmthon)
     sticker = "animate.webm"
     return sticker
-
-
+    
 def reddit_thumb_link(preview, thumb=None):
     for i in preview:
         if "width=216" in i:
@@ -249,10 +248,10 @@ async def covidindia(state):
 
 async def hide_inlinebot(borg, bot_name, text, chat_id, reply_to_id, c_lick=0):
     sticcers = await borg.inline_query(bot_name, f"{text}.")
-    cat = await sticcers[c_lick].click("me", hide_via=True)
-    if cat:
-        await borg.send_file(int(chat_id), cat, reply_to=reply_to_id)
-        await cat.delete()
+    jmthon = await sticcers[c_lick].click("me", hide_via=True)
+    if jmthon:
+        await borg.send_file(int(chat_id), jmthon, reply_to=reply_to_id)
+        await jmthon.delete()
 
 
 # for stickertxt
@@ -292,7 +291,7 @@ async def waifutxt(text, chat_id, reply_to_id, bot):
         63,
     ]
     sticcers = await bot.inline_query("stickerizerbot", f"#{choice(animus)}{text}")
-    cat = await sticcers[0].click("me", hide_via=True)
-    if cat:
-        await bot.send_file(int(chat_id), cat, reply_to=reply_to_id)
-        await cat.delete()
+    jmthon = await sticcers[0].click("me", hide_via=True)
+    if jmthon:
+        await bot.send_file(int(chat_id), jmthon, reply_to=reply_to_id)
+        await jmthon.delete()
