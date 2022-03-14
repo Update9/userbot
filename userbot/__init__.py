@@ -1,3 +1,11 @@
+# @Jmthon - < https://t.me/Jmthon >
+# Copyright (C) 2021 - JMTHON-AR
+# All rights reserved.
+#
+# This file is a part of < https://github.com/JMTHON-AR/JMTHON >
+# Please read the GNU Affero General Public License in;
+# < https://github.com/JMTHON-AR/JM-THON/blob/master/LICENSE
+# ===============================================================
 import signal
 import sys
 import time
@@ -6,36 +14,34 @@ import heroku3
 
 from .Config import Config
 from .core.logger import logging
-from .core.session import catub
+from .core.session import jmthon
 from .helpers.utils.utils import runasync
 from .sql_helper.globals import addgvar, delgvar, gvarstatus
 
 __version__ = "3.0.6"
-__license__ = "GNU Affero General Public License v3.0"
-__author__ = "CatUserBot <https://github.com/TgCatUB/catuserbot>"
-__copyright__ = f"CatUserBot Copyright (C) 2020 - 2021  {__author__}"
+__license__ = "رخصة جنو أفيرو العمومية v3.0"
+__author__ = "jmthon <https://github.com/JMTHON-AR/jmthon>"
+__copyright__ = f"حقوق جمثون (C) 2020 - 2021  {__author__}"
 
-catub.version = __version__
-catub.tgbot.version = __version__
-LOGS = logging.getLogger("CatUserbot")
-bot = catub
+jmthon.version = __version__
+jmthon.tgbot.version = __version__
+LOGS = logging.getLogger("jmthon")
+bot = jmthon
 
 StartTime = time.time()
-catversion = "3.0.6"
+jmthonversion = "3.0.6"
 
 
 def close_connection(*_):
-    print("Clossing Userbot connection.")
-    runasync(catub.disconnect())
+    print("تم اغلاق اتصال السورس.")
+    runasync(jmthon.disconnect())
     sys.exit(143)
 
 
 signal.signal(signal.SIGTERM, close_connection)
 
-if Config.UPSTREAM_REPO == "badcat":
-    UPSTREAM_REPO_URL = "https://github.com/Jisan09/catuserbot"
-elif Config.UPSTREAM_REPO == "goodcat":
-    UPSTREAM_REPO_URL = "https://github.com/TgCatUB/catuserbot"
+if Config.UPSTREAM_REPO == "jmthon-ar":
+    UPSTREAM_REPO_URL = "https://github.com/JMTHON-AR/JM-THON"
 else:
     UPSTREAM_REPO_URL = Config.UPSTREAM_REPO
 
