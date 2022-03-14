@@ -26,53 +26,53 @@ async def media_to_pic(event, reply, noedits=False):  # sourcery no-metrics
     ]:
         return event, None
     if not noedits:
-        catevent = await edit_or_reply(
-            event, "`Transfiguration Time! Converting to ....`"
+        jmthonevent = await edit_or_reply(
+            event, "**- جاري التحوبل انتظر قليلا** ...."
         )
 
     else:
-        catevent = event
-    catmedia = None
-    catfile = os.path.join("./temp/", "meme.png")
-    if os.path.exists(catfile):
-        os.remove(catfile)
+        jmthonevent = event
+    jmthonmedia = None
+    jmthonfile = os.path.join("./temp/", "meme.png")
+    if os.path.exists(jmthonfile):
+        os.remove(jmthonfile)
     if mediatype == "Photo":
-        catmedia = await reply.download_media(file="./temp")
-        im = Image.open(catmedia)
-        im.save(catfile)
+        jmthonmedia = await reply.download_media(file="./temp")
+        im = Image.open(jmthonmedia)
+        im.save(jmthonfile)
     elif mediatype in ["Audio", "Voice"]:
-        await event.client.download_media(reply, catfile, thumb=-1)
+        await event.client.download_media(reply, jmthonfile, thumb=-1)
     elif mediatype == "Sticker":
-        catmedia = await reply.download_media(file="./temp")
-        if catmedia.endswith(".tgs"):
-            catcmd = f"lottie_convert.py --frame 0 -if lottie -of png '{catmedia}' '{catfile}'"
-            stdout, stderr = (await runcmd(catcmd))[:2]
+        jmthonmedia = await reply.download_media(file="./temp")
+        if jmthonmedia.endswith(".tgs"):
+            jmthoncmd = f"lottie_convert.py --frame 0 -if lottie -of png '{jmthonmedia}' '{jmthonfile}'"
+            stdout, stderr = (await runcmd(jmthoncmd))[:2]
             if stderr:
                 LOGS.info(stdout + stderr)
-        elif catmedia.endswith(".webp"):
-            im = Image.open(catmedia)
-            im.save(catfile)
+        elif jmthonmedia.endswith(".webp"):
+            im = Image.open(jmthonmedia)
+            im.save(jmthonfile)
     elif mediatype in ["Round Video", "Video", "Gif"]:
-        await event.client.download_media(reply, catfile, thumb=-1)
-        if not os.path.exists(catfile):
-            catmedia = await reply.download_media(file="./temp")
+        await event.client.download_media(reply, jmthonfile, thumb=-1)
+        if not os.path.exists(jmthonfile):
+            jmthonmedia = await reply.download_media(file="./temp")
             clip = VideoFileClip(media)
             try:
-                clip = clip.save_frame(catfile, 0.1)
+                clip = clip.save_frame(jmthonfile, 0.1)
             except Exception:
-                clip = clip.save_frame(catfile, 0)
+                clip = clip.save_frame(jmthonfile, 0)
     elif mediatype == "Document":
         mimetype = reply.document.mime_type
         mtype = mimetype.split("/")
         if mtype[0].lower() == "image":
-            catmedia = await reply.download_media(file="./temp")
-            im = Image.open(catmedia)
-            im.save(catfile)
-    if catmedia and os.path.lexists(catmedia):
-        os.remove(catmedia)
-    if os.path.lexists(catfile):
-        return catevent, catfile, mediatype
-    return catevent, None
+            jmthonmedia = await reply.download_media(file="./temp")
+            im = Image.open(jmthonmedia)
+            im.save(jmthonfile)
+    if jmthonmedia and os.path.lexists(jmthonmedia):
+        os.remove(jmthonmedia)
+    if os.path.lexists(jmthonfile):
+        return jmthonevent, jmthonfile, mediatype
+    return jmthonevent, None
 
 
 async def take_screen_shot(

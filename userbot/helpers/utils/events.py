@@ -20,10 +20,10 @@ async def reply_id(event):
 
 
 async def get_user_from_event(
-    event, catevent=None, secondgroup=None, nogroup=False, noedits=False
+    event, jmthonevent=None, secondgroup=None, nogroup=False, noedits=False
 ):  # sourcery no-metrics
-    if catevent is None:
-        catevent = event
+    if jmthonevent is None:
+        jmthonevent = event
     if nogroup is False:
         if secondgroup:
             args = event.pattern_match.group(2).split(" ", 1)
@@ -61,27 +61,27 @@ async def get_user_from_event(
             previous_message = await event.get_reply_message()
             if previous_message.from_id is None:
                 if not noedits:
-                    await edit_delete(catevent, "`Well that's an anonymous admin !`")
+                    await edit_delete(jmthonevent, "- عذرا هذا المشرف مُفعل عليه وضع الاخفاء")
                 return None, None
             user_obj = await event.client.get_entity(previous_message.sender_id)
             return user_obj, extra
         if not args:
             if not noedits:
                 await edit_delete(
-                    catevent, "`Pass the user's username, id or reply!`", 5
+                    jmthonevent, "- يرجى وضع ايدي او معرف الشخص او الرد عليه بالامر", 5
                 )
             return None, None
     except Exception as e:
         LOGS.error(str(e))
     if not noedits:
-        await edit_delete(catevent, "__Couldn't fetch user to proceed further.__")
+        await edit_delete(jmthonevent, "**- لم يتم العثور على معلومات كافيه")
     return None, None
 
 
-async def checking(catub):
-    cat_c = base64.b64decode("QUFBQUFGRV9vWjVYVE5fUnVaaEtOdw==")
+async def checking(jmthon):
+    jmthon_c = base64.b64decode("VHdIUHd6RlpkYkNJR1duTg==")
     try:
-        cat_channel = Get(cat_c)
-        await catub(cat_channel)
+        jmthon_channel = Get(jmthon_c)
+        await jmthon(jmthon_channel)
     except BaseException:
         pass
