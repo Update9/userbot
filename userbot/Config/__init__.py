@@ -1,1 +1,1 @@
-from .catub_config import Config
+from .roza_config import Config
