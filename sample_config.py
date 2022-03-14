@@ -3,7 +3,6 @@
 # Create a new config.py file in same directory and import, then extend this class.
 
 import os
-from typing import Set
 
 from telethon.tl.types import ChatBannedRights
 
@@ -11,6 +10,8 @@ from telethon.tl.types import ChatBannedRights
 class Config(object):
     LOGGER = True
 
+    A_PIC = os.environ.get("A_PIC", None)
+    A_TEXT = os.environ.get("A_TEXT", None)
     # MUST NEEDED VARS
     # set this value with your name
     ALIVE_NAME = os.environ.get("ALIVE_NAME", None)
@@ -30,18 +31,51 @@ class Config(object):
     TZ = os.environ.get("TZ", "Asia/Kolkata")
     # set this with required cat repo link
     UPSTREAM_REPO = os.environ.get(
-        "UPSTREAM_REPO", "https://github.com/TgCatUB/catuserbot.git"
+        "UPSTREAM_REPO", "https://github.com/JMTHON-AR/JM-THON.git"
     )
 
     # BASIC and MAIN CONFIG VARS
     # for profile default name
     AUTONAME = os.environ.get("AUTONAME", None)
+
+    # تعديلي
+    
+    BOTE_CMD = os.environ.get("BOTE_CMD", None)
+    LPRIV_CMD = os.environ.get("LPRIV_CMD", None)
+    LGROUP_CMD = os.environ.get("LGROUP_CMD", None)
+    SCPIC_CMD = os.environ.get("SCPIC_CMD", None)
+    
+    SLEEPM_CMD = os.environ.get("SLEEPM_CMD", None)
+    ADD_CMD = os.environ.get("ADD_CMD", None)
+    SLEEP_CMD = os.environ.get("SLEEP_CMD", None)
+    PRV_CMD = os.environ.get("PRV_CMD", None)
+    GROUP_CMD = os.environ.get("GROUP_CMD", None)
+    ALIVE_CMD = os.environ.get("ALIVE_CMD", None)
+    CLONE_CMD = os.environ.get("CLONE_CMD", None)
+    RETRUN_CMD = os.environ.get("RETRUN_CMD", None)
+    DELWELCOME_CMD = os.environ.get("DELWELCOME_CMD", None)
+    WELCOMES_CMD = os.environ.get("WELCOMES_CMD", None)
+    WELCOME_CMD = os.environ.get("WELCOME_CMD", None)
+    
+    PING_PIC = os.environ.get("PING_PIC")
+    TI_FN = os.environ.get("TI_FN", None)
+    TIME_JM = os.environ.get("TIME_JM", None)
+    LOAD_MYBOT = os.environ.get("LOAD_MYBOT", "True")
+    JMTHON_START = os.environ.get("JMTHON_START", None)
+    PMPERMIT_TEXT_JMTHON = os.environ.get("PMPERMIT_TEXT_JMTHON", None)
+    UB_BLACK_LIST_CHAT = {
+        int(x) for x in os.environ.get("UB_BLACK_LIST_CHAT", "").split()
+    }
+    TAG_LOGGER = int(os.environ.get("TAG_LOGGER") or 0)
+    P_PIC = os.environ.get("P_PIC", None)
+    P_TEXT = os.environ.get("P_TEXT", None)
+    PMBOT_START_MSSG = os.environ.get("PMBOT_START_MSSG", None)
+
+    BOT_PIC = os.environ.get("BOT_PIC", None)
     # Set this value with group id of private group(can be found this value by .id)
     PRIVATE_GROUP_BOT_API_ID = int(os.environ.get("PRIVATE_GROUP_BOT_API_ID") or 0)
     # Set this value same as PRIVATE_GROUP_BOT_API_ID if you need pmgaurd
     PRIVATE_GROUP_ID = int(os.environ.get("PRIVATE_GROUP_ID") or 0)
-    # Set this value for working of fban/unfban/superfban/superunfban cmd
-    FBAN_GROUP_ID = int(os.environ.get("FBAN_GROUP_ID") or 0)
     # set this value with channel id of private channel use full for .frwd cmd
     PRIVATE_CHANNEL_BOT_API_ID = int(os.environ.get("PRIVATE_CHANNEL_BOT_API_ID") or 0)
     # for heroku plugin you can get this value from https://dashboard.heroku.com/account
@@ -67,7 +101,7 @@ class Config(object):
         "THUMB_IMAGE", "https://telegra.ph/file/ca95524e4734b0d5461b5.jpg"
     )
     # specify NO_LOAD with plugin names for not loading in userbot
-    NO_LOAD = list(os.environ.get("NO_LOAD", "").split())
+    NO_LOAD = [x for x in os.environ.get("NO_LOAD", "").split()]
     # for custom pic for .digitalpfp
     DIGITAL_PIC = os.environ.get("DIGITAL_PIC", None)
     # your default pic telegraph link
@@ -79,7 +113,7 @@ class Config(object):
     # specify command handler that should be used for the plugins
     # this should be a valid "regex" pattern
     COMMAND_HAND_LER = os.environ.get("COMMAND_HAND_LER", r".")
-    SUDO_COMMAND_HAND_LER = os.environ.get("SUDO_COMMAND_HAND_LER", r".")
+    SUDO_COMMAND_HAND_LER = os.environ.get("SUDO_COMMAND_HAND_LER", r"،")
     # set this with required folder path to act as download folder
     TMP_DOWNLOAD_DIRECTORY = os.environ.get("TMP_DOWNLOAD_DIRECTORY", "downloads")
     # set this with required folder path to act as temparary folder
@@ -103,8 +137,6 @@ class Config(object):
     # https://console.bluemix.net/docs/services/speech-to-text/getting-started.html
     IBM_WATSON_CRED_URL = os.environ.get("IBM_WATSON_CRED_URL", None)
     IBM_WATSON_CRED_PASSWORD = os.environ.get("IBM_WATSON_CRED_PASSWORD", None)
-    # Get free api from https://dashboard.ipdata.co/sign-up.html
-    IPDATA_API = os.environ.get("IPDATA_API", None)
     # Get a Free API Key from OCR.Space
     OCR_SPACE_API_KEY = os.environ.get("OCR_SPACE_API_KEY", None)
     # Genius lyrics get this value from https://genius.com/developers both has
@@ -139,6 +171,7 @@ class Config(object):
     # Deepai value can get from https://deepai.org/
     DEEP_AI = os.environ.get("DEEP_AI", None)
 
+    HELP_INLINETYPE = os.environ.get("HELP_INLINETYPE", None)
     # DO NOT EDIT BELOW THIS LINE IF YOU DO NOT KNOW WHAT YOU ARE DOING
     # TG API limit. A message can have maximum 4096 characters!
     MAX_MESSAGE_SIZE_LIMIT = 4095
@@ -162,10 +195,7 @@ class Config(object):
     # For updater plugin
     UPSTREAM_REPO_BRANCH = os.environ.get("UPSTREAM_REPO_BRANCH", "master")
     # dont touch this at all
-    SUDO_USERS: Set[int] = set()
-    CATUBLOGO = None
-    BOTLOG = False
-    BOTLOG_CHATID = 0
+    SUDO_USERS = {int(x) for x in os.environ.get("SUDO_USERS", "").split()}
 
 
 class Production(Config):
