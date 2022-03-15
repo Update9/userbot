@@ -18,9 +18,6 @@ from ..Config import Config
 
 LOGS = logging.getLogger(__name__)
 
-WELCOME_CMD = Config.WELCOME_CMD or "ترحيب"
-WELCOMES_CMD = Config.WELCOMES_CMD or "الترحيبات"
-DELWELCOME_CMD = Config.DELWELCOME_CMD or "حذف الترحيبات"
 
 @jmthon.on(events.ChatAction)
 async def _(event):  # sourcery no-metrics
@@ -86,8 +83,9 @@ async def _(event):  # sourcery no-metrics
         )
         update_previous_welcome(event.chat_id, current_message.id)
 
-
-@jmthon.on(admin_cmd(pattern=f"{WELCOME_CMD}(?:\s|$)([\s\S]*)"))
+@jmthon.ar_cmd(
+    pattern="ترحيب(?:\s|$)([\s\S]*)",
+    command=("ترحيب", plugin_category))
 async def save_welcome(event):
     msg = await event.get_reply_message()
     string = "".join(event.text.split(maxsplit=1)[1:])
@@ -121,7 +119,9 @@ async def save_welcome(event):
     await edit_or_reply("- هـنالك خـطأ في وضـع الـترحيب هـنا")
 
 
-@jmthon.on(admin_cmd(pattern=f"{DELWELCOME_CMD}$"))
+@jmthon.ar_cmd(
+    pattern="حذف الترحيبات$",
+    command=("حذف الترحيبات", plugin_category))
 async def del_welcome(event):
     "To turn off welcome message"
     if rm_welcome_setting(event.chat_id) is True:
@@ -130,7 +130,9 @@ async def del_welcome(event):
         await edit_or_reply(event, "- ليـس لـدي اي تـرحيبـات بالأصـل")
 
 
-@jmthon.on(admin_cmd(pattern=f"{WELCOMES_CMD}$"))
+@jmthon.ar_cmd(
+    pattern="الترحيبات$",
+    command=("الترحيبات", plugin_category))
 async def show_welcome(event):
     cws = get_current_welcome_settings(event.chat_id)
     if not cws:
