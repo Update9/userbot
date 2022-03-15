@@ -1,5 +1,3 @@
-# Copyright (C) 2021 JMTHON TEAM
-# FILES WRITTEN BY  @RR7PP
 from telethon import events
 
 from userbot import jmthon
@@ -17,7 +15,7 @@ from . import BOTLOG_CHATID
 from ..Config import Config
 
 LOGS = logging.getLogger(__name__)
-
+plugin_category = "utils"
 
 @jmthon.on(events.ChatAction)
 async def _(event):  # sourcery no-metrics
@@ -150,7 +148,6 @@ async def show_welcome(event):
             event, "- أنا الان اقوم بالترحيب بالمستخدمين الجدد مع هذه الرسالة"
         )
         await event.reply(cws.reply)
-
 
 @jmthon.on(admin_cmd(pattern="الترحيب السابق (تشغيل|ايقاف)$"))
 async def del_welcome(event):
