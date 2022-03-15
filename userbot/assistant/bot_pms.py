@@ -109,14 +109,14 @@ async def bot_start(event):
         else:
             start_msg = f"اهلا ! 👤{mention},\
                         \nانا هو البوت المساعد الخاص بـ {my_mention}.\
-                        \nيمكنك التواصل مع مالك الحسابمن هنا.\
-                        \n\nتم صنع بواسطه سوري [جمثون](https://t.me/jmthon)"
+                        \nيمكنك التواصل مع مالك الحساب من هنا.\
+                        \n\nتم صنع بواسطه  سورس [جمثون](https://t.me/jmthon)"
         buttons = [
             (
-                Button.url("Repo", "https://github.com/JMTHON-AR/jmthon"),
+                Button.url("الريبو", "https://github.com/jmthonar/pack),
                 Button.url(
-                    "Deploy",
-                    "https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2FJMTHON-AR%2Fjmthon&template=https%3A%2F%2Fgithub.com%2FJMTHON-AR%2Fjmthon",
+                    "المطور",
+                    "https://t.me/jmthon",
                 ),
             )
         ]
