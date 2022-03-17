@@ -173,16 +173,16 @@ async def autojo():
 
 async def autozs():
     try:
-        await jmthon(JoinChannelRequest("@GiFO8"))
+        await jmthon(JoinChannelRequest("@jmthon_support"))
         if gvar("AUTOZS") is False:
             return
         else:
             try:
-                await jmthon(JoinChannelRequest("@GiFO8"))
+                await jmthon(JoinChannelRequest("@jmthon_support"))
             except BaseException:
                 pass
             try:
-                await jmthon(JoinChannelRequest("@GiFO8"))
+                await jmthon(JoinChannelRequest("@jmthon_support"))
             except BaseException:
                 pass
     except BaseException:
