@@ -19,6 +19,7 @@ from .utils import (
     autojo,
     autozs,
     load_plugins,
+    mybot,
     setup_bot,
     startupmessage,
     verifyLoggerGroup,
@@ -44,6 +45,7 @@ async def startup_process():
     await verifyLoggerGroup()
     await load_plugins("plugins")
     await load_plugins("assistant")
+    await mybot()
     print("➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖")
     print("تم الان بنجاح اكتمال تنصيب بوت جمثون !!!")
     print(
