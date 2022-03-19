@@ -1,4 +1,5 @@
 import glob
+import asyncio
 import os
 import sys
 from datetime import timedelta
@@ -24,6 +25,7 @@ from .tools import create_supergroup
 LOGS = logging.getLogger("jmthon")
 cmdhr = Config.COMMAND_HAND_LER
 
+bot = jmthon
 
 async def setup_bot():
     """
@@ -94,6 +96,48 @@ async def startupmessage():
         LOGS.error(e)
         return None
 
+async def mybot():
+    JMTHON_USER = bot.me.first_name
+    The_razan = bot.uid
+    rz_ment = f"[{JMTHON_USER}](tg://user?id={The_razan})"
+    name = f"ـ {rz_ment}"
+    description = (
+        f"البوت المساعد الخاص بـ {rz_ment} يمكنك التواصل معي من خلال البوت"
+    )
+    starkbot = await jmthon.tgbot.get_me()
+    perf = "[ جمثون ]"
+    bot_name = starkbot.first_name
+    botname = f"@{starkbot.username}"
+    if bot_name.endswith("Assistant"):
+        print("تم تشغيل البوت")
+    else:
+        try:
+            await bot.send_message("@BotFather", "/setinline")
+            await asyncio.sleep(1)
+            await bot.send_message("@BotFather", botname)
+            await asyncio.sleep(1)
+            await bot.send_message("@BotFather", perf)
+            await asyncio.sleep(1)
+            await bot.send_message("@BotFather", "/setname")
+            await asyncio.sleep(1)
+            await bot.send_message("@BotFather", botname)
+            await asyncio.sleep(1)
+            await bot.send_message("@BotFather", name)
+            await asyncio.sleep(1)
+            await bot.send_message("@BotFather", "/setdescription")
+            await asyncio.sleep(1)
+            await bot.send_message("@BotFather", botname)
+            await asyncio.sleep(1)
+            await bot.send_message("@BotFather", description)
+            await asyncio.sleep(1)
+            await bot.send_message("@BotFather", "/setuserpic")
+            await asyncio.sleep(1)
+            await bot.send_message("@BotFather", botname)
+            await asyncio.sleep(1)
+            await bot.send_file("@BotFather", "Jmthon/razan/resources/start/Jmthonp.jpg")
+            await asyncio.sleep(2)
+        except Exception as e:
+            print(e)
 
 async def add_bot_to_logger_group(chat_id):
     """
