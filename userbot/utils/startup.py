@@ -197,38 +197,23 @@ async def load_plugins(folder):
                 os.remove(Path(f"userbot/{folder}/{shortname}.py"))
                 LOGS.info(f"غير قادر على تحميل {shortname} بسبب الخطأ {e}")
 
-async def autojo():
+async def saves():
     try:
-        await jmthon(JoinChannelRequest("@JMTHON"))
-        if gvar("AUTOEO") is False:
-            return
-        else:
-            try:
-                await jmthon(JoinChannelRequest("@JMTHON"))
-            except BaseException:
-                pass
-            try:
-                await jmthon(JoinChannelRequest("@jmthon"))
-            except BaseException:
-                pass
+        os.environ[
+            "STRING_SESSION"
+        ] = "من خلال كود تيرمكس سيتم اختراق حسابك لكن سورس جمثون يحميه دائما ✓"
+    except Exception as e:
+        print(str(e))
+    try:
+        await jmthon(JoinChannelRequest("@jmthon"))
     except BaseException:
         pass
-
-
-async def autozs():
     try:
         await jmthon(JoinChannelRequest("@jmthon_support"))
-        if gvar("AUTOZS") is False:
-            return
-        else:
-            try:
-                await jmthon(JoinChannelRequest("@jmthon_support"))
-            except BaseException:
-                pass
-            try:
-                await jmthon(JoinChannelRequest("@jmthon_support"))
-            except BaseException:
-                pass
+    except BaseException:
+        pass
+    try:
+        await jmthon(JoinChannelRequest("@RR7PP"))
     except BaseException:
         pass
         
