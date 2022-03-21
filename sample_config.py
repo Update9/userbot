@@ -58,6 +58,7 @@ class Config(object):
     WELCOME_CMD = os.environ.get("WELCOME_CMD", None)
     
     PING_PIC = os.environ.get("PING_PIC")
+    ADJM_PIC = os.environ.get("ADJM_PIC")
     TI_FN = os.environ.get("TI_FN", None)
     TIME_JM = os.environ.get("TIME_JM", None)
     LOAD_MYBOT = os.environ.get("LOAD_MYBOT", "True")
