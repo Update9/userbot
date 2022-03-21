@@ -9,6 +9,7 @@ import requests
 import spamwatch as spam_watch
 from validators.url import url
 
+from Jmthon.razan.resources.start import *
 from .. import *
 from ..Config import Config
 from ..core.logger import logging
@@ -49,6 +50,12 @@ G_DRIVE_CLIENT_SECRET = Config.G_DRIVE_CLIENT_SECRET
 G_DRIVE_DATA = Config.G_DRIVE_DATA
 G_DRIVE_FOLDER_ID = Config.G_DRIVE_FOLDER_ID
 TMP_DOWNLOAD_DIRECTORY = Config.TMP_DOWNLOAD_DIRECTORY
+
+ban_rz = "Jmthon/razan/resources/start/حظر.jpg"
+mute_rz = "Jmthon/razan/resources/start/كتم.jpg"
+promote_rz = "Jmthon/razan/resources/start/رفع.jpg"
+demote_rz = "Jmthon/razan/resources/start/تنزيل.jpg"
+
 
 # spamwatch support
 if Config.SPAMWATCH_API:
