@@ -21,7 +21,7 @@ from telethon.tl.types import (
 from telethon.utils import get_display_name
 
 from userbot import jmthon
-
+from ..Config import Config
 from ..core.logger import logging
 from ..core.managers import edit_delete as eod, edit_or_reply as eor
 from ..helpers import media_type
@@ -62,7 +62,7 @@ UNBAN_RIGHTS = ChatBannedRights(
     embed_links=None,
 )
 
-ADJM_PIC = gvarstatus("ADJM_PIC")
+ADJM_PIC = Config.ADJM_PIC
 if ADJM_PIC:
     prmt_rz = ADJM_PIC
 else:
